@@ -11,8 +11,7 @@
 </head>
 <body>
   <header class="hero">
-    <div class="hero-image-wrap">
-      <img class="hero-image" src="/assets/closet.jpeg" alt="Kat's closet" />
+    <div class="hero-image-wrap" style="background:linear-gradient(135deg,#151515 0%,#342d30 48%,#dfeaf1 150%)">
       <div class="hero-image-tint"></div>
       <div class="hero-copy">
         <p class="eyebrow">A personal resale edit</p>
@@ -22,45 +21,15 @@
       </div>
     </div>
   </header>
-
   <main>
     <section class="shop-section" aria-labelledby="shop-heading">
-      <div class="section-head">
-        <div>
-          <p class="section-kicker">Currently available</p>
-          <h2 id="shop-heading">Shop my closet</h2>
-        </div>
-        <p id="updated" class="updated">Availability checked on page load</p>
-      </div>
-
-      <div class="filters" role="group" aria-label="Filter listings">
-        <button class="filter active" data-filter="All">All</button>
-        <button class="filter" data-filter="Bags">Bags</button>
-        <button class="filter" data-filter="Clothing">Clothing</button>
-        <button class="filter" data-filter="Shoes">Shoes</button>
-        <button class="filter" data-filter="Accessories">Accessories</button>
-      </div>
-
+      <div class="section-head"><div><p class="section-kicker">Currently available</p><h2 id="shop-heading">Shop my closet</h2></div><p id="updated" class="updated">Availability checked on page load</p></div>
+      <div class="filters" role="group" aria-label="Filter listings"><button class="filter active" data-filter="All">All</button><button class="filter" data-filter="Bags">Bags</button><button class="filter" data-filter="Clothing">Clothing</button><button class="filter" data-filter="Shoes">Shoes</button><button class="filter" data-filter="Accessories">Accessories</button></div>
       <div id="available-grid" class="product-grid" aria-live="polite"></div>
     </section>
-
-    <section class="sold-section" aria-labelledby="sold-heading">
-      <div class="sold-intro">
-        <p class="section-kicker">Previously loved</p>
-        <h2 id="sold-heading">Gone, but part of the edit.</h2>
-        <p>A little preview of what tends to show up here. Sold pieces stay visible for inspiration, but aren't clickable.</p>
-      </div>
-      <div id="sold-grid" class="product-grid sold-grid"></div>
-    </section>
+    <section class="sold-section" aria-labelledby="sold-heading"><div class="sold-intro"><p class="section-kicker">Previously loved</p><h2 id="sold-heading">Gone, but part of the edit.</h2><p>A little preview of what tends to show up here. Sold pieces stay visible for inspiration, but aren't clickable.</p></div><div id="sold-grid" class="product-grid sold-grid"></div></section>
   </main>
-
-  <footer>
-    <div class="footer-line"></div>
-    <p>Kat's TRR Edit</p>
-    <p class="footer-note">Independent closet edit · Purchases are completed on The RealReal.</p>
-  </footer>
-
-  <script src="/listings.js"></script>
-  <script src="/script.js"></script>
+  <footer><div class="footer-line"></div><p>Kat's TRR Edit</p><p class="footer-note">Independent closet edit · Purchases are completed on The RealReal.</p></footer>
+  <script src="/listings.js"></script><script src="/script.js"></script>
 </body>
 </html>
