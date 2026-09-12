@@ -1,5 +1,15 @@
 {
   "cleanUrls": true,
+  "functions": {
+    "api/*.js": {
+      "includeFiles": "listings.js"
+    }
+  },
+  "rewrites": [
+    {"source":"/shop/:slug","destination":"/api/product?slug=:slug"},
+    {"source":"/sitemap.xml","destination":"/api/sitemap"},
+    {"source":"/robots.txt","destination":"/api/robots"}
+  ],
   "headers": [
     {"source":"/(.*)","headers":[{"key":"X-Content-Type-Options","value":"nosniff"}]}
   ]
