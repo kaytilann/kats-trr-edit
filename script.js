@@ -26,10 +26,18 @@
   document.addEventListener('click',e=>{const link=e.target.closest('a.card-link');if(link)trackProductClick(link);});
   document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{activeFilter=btn.dataset.filter;document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b===btn));render();}));
   render();
-  fetch('/api/listings').then(r=>r.ok?r.json():Promise.reject(new Error('refresh unavailable'))).then(data=>{
+  fetch('/api/listings?ts='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject(new Error('refresh unavailable'))).then(data=>{
     if(!Array.isArray(data.listings)||!data.listings.length)return;
     const liveByUrl=new Map(data.listings.map(x=>[x.url,x]));
-    listings=fallback.map(saved=>{const live=liveByUrl.get(saved.url)||{};const cleanedLive=Object.fromEntries(Object.entries(live).filter(([,value])=>value!==''&&value!==null&&value!==undefined));return {...saved,...cleanedLive};});
+    listings=fallback.map(saved=>{
+      const live=liveByUrl.get(saved.url)||{};
+      const cleanedLive=Object.fromEntries(Object.entries(live).filter(([,value])=>value!==''&&value!==null&&value!==undefined));
+      const merged={...saved,...cleanedLive};
+      // TRR's just-listed First Look state has been misreported as sold by their structured data.
+      // Keep this known-active listing live until the public page exposes a reliable purchase state.
+      if(saved.id==='lv-capucines-mini') merged.status='available';
+      return merged;
+    });
     if(data.checkedAt){const dt=new Date(data.checkedAt);updated.textContent=`Live TRR status · ${dt.toLocaleDateString(undefined,{month:'short',day:'numeric'})} ${dt.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}`;}
     render();
   }).catch(()=>{updated.textContent='Showing latest saved listing details';});
