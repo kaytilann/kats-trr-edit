@@ -40,7 +40,7 @@ function embeddedPrice(html,text){
 }
 
 async function scrape(url){
-  const res = await fetch(url,{headers:{'user-agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/152 Safari/537.36','accept-language':'en-US,en;q=0.9'},redirect:'follow'});
+  const res = await fetch(url,{headers:{'user-agent':'Mozilla/5.0 (compatible; KatsTRREdit/1.0)','accept-language':'en-US,en;q=0.9'},redirect:'follow'});
   if(!res.ok) throw new Error(`TRR ${res.status}`);
   const html=await res.text(), text=textContent(html);
   const image=one(html,/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)/i)||one(html,/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
