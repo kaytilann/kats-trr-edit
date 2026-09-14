@@ -6,6 +6,7 @@
   const soldGrid = document.getElementById('sold-grid');
   const updated = document.getElementById('updated');
   function esc(str=''){return String(str).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+  function isLaunched(item){if(!item.launchDate)return true;const launch=new Date(`${item.launchDate}T07:00:00Z`);return Date.now()>=launch.getTime();}
   function imageMarkup(item){if(item.image)return `<img class="product-image" src="${esc(item.image)}" alt="${esc(item.brand+' '+item.name)}" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="image-placeholder" style="display:none">${esc(item.brand)}<br>${esc(item.name)}</div>`;return `<div class="image-placeholder">${esc(item.brand)}<br>${esc(item.name)}</div>`;}
   function card(item,sold=false){
     const details=[item.size,item.condition].filter(Boolean).join(' · ');
@@ -15,7 +16,7 @@
     if(sold)return `<article class="card sold-card">${visual}${info}</article>`;
     return `<article class="card"><a class="card-link" data-product-id="${esc(item.id||'')}" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">${visual}${info}</a></article>`;
   }
-  function render(){const available=listings.filter(i=>i.status!=='sold'&&(activeFilter==='All'||i.category===activeFilter));const sold=listings.filter(i=>i.status==='sold');availableGrid.innerHTML=available.length?available.map(i=>card(i)).join(''):'<p class="loading">Nothing in this category right now ♡</p>';soldGrid.innerHTML=sold.length?sold.map(i=>card(i,true)).join(''):'<p class="loading">No sold pieces yet.</p>';}
+  function render(){const available=listings.filter(i=>isLaunched(i)&&i.status!=='sold'&&(activeFilter==='All'||i.category===activeFilter));const sold=listings.filter(i=>isLaunched(i)&&i.status==='sold');availableGrid.innerHTML=available.length?available.map(i=>card(i)).join(''):'<p class="loading">Nothing in this category right now ♡</p>';soldGrid.innerHTML=sold.length?sold.map(i=>card(i,true)).join(''):'<p class="loading">No sold pieces yet.</p>';}
   function trackProductClick(link){
     const item=listings.find(i=>i.id===link.dataset.productId || i.url===link.href);
     if(!item||typeof window.gtag!=='function')return;
