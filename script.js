@@ -16,7 +16,7 @@
     if(sold)return `<article class="card sold-card">${visual}${info}</article>`;
     return `<article class="card"><a class="card-link" data-product-id="${esc(item.id||'')}" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">${visual}${info}</a></article>`;
   }
-  function render(){const available=listings.filter(i=>isLaunched(i)&&i.status!=='sold'&&(activeFilter==='All'||i.category===activeFilter));const sold=listings.filter(i=>isLaunched(i)&&i.status==='sold');availableGrid.innerHTML=available.length?available.map(i=>card(i)).join(''):'<p class="loading">Nothing in this category right now ♡</p>';soldGrid.innerHTML=sold.length?sold.map(i=>card(i,true)).join(''):'<p class="loading">No sold pieces yet.</p>';}
+  function render(){const available=listings.filter(i=>isLaunched(i)&&i.status==='available'&&(activeFilter==='All'||i.category===activeFilter));const sold=listings.filter(i=>isLaunched(i)&&i.status==='sold');availableGrid.innerHTML=available.length?available.map(i=>card(i)).join(''):'<p class="loading">Nothing in this category right now ♡</p>';soldGrid.innerHTML=sold.length?sold.map(i=>card(i,true)).join(''):'<p class="loading">No sold pieces yet.</p>';}
   function trackProductClick(link){
     const item=listings.find(i=>i.id===link.dataset.productId || i.url===link.href);
     if(!item||typeof window.gtag!=='function')return;
@@ -34,9 +34,10 @@
       const live=liveByUrl.get(saved.url)||{};
       const cleanedLive=Object.fromEntries(Object.entries(live).filter(([,value])=>value!==''&&value!==null&&value!==undefined));
       const merged={...saved,...cleanedLive};
+      // An inconclusive live scrape must not overwrite a previously known sold status.
+      if(live.status==='unknown') merged.status=saved.status==='sold'?'sold':'unknown';
       // TRR's just-listed First Look state has been misreported as sold by their structured data.
       // Keep this known-active listing live until the public page exposes a reliable purchase state.
-      if(saved.id==='lv-capucines-mini') merged.status='available';
       return merged;
     });
     if(data.checkedAt){const dt=new Date(data.checkedAt);updated.textContent=`Live TRR status · ${dt.toLocaleDateString(undefined,{month:'short',day:'numeric'})} ${dt.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}`;}
